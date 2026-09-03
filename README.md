@@ -81,7 +81,7 @@ Every network-facing script has a configuration block at the top. Fill it in bef
 ```python
 # ---------- WIFI ----------
 SSID     = "Robotic WIFI"
-PASSWORD = "rbtWIFI@2025"
+PASSWORD = " "
 
 # ---------- TELEGRAM ----------
 BOT_TOKEN = " "      # <-- paste your bot token here
