@@ -17,7 +17,6 @@ its own section below with its code, its behaviour, and the evidence it produced
 | [2](#task-2--telegram-send-15-pts) | `Task2.py` | Wi-Fi + `send_message()` | [chat screenshot](#evidence-1) |
 | [3](#task-3--bot-commands-15-pts) | `Task3.py` | `/status`, `/on`, `/off` | [chat screenshot](#evidence-2) |
 | [4](#task-4--alerting--auto-off-30-pts) | `Task4.py` | Threshold alerts + auto-OFF state machine | [demo video](#evidence-3) |
-| [5](#task-5--documentation-30-pts) | `README.md` | This document | — |
 
 ---
 
