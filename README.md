@@ -13,20 +13,22 @@ its own section below with its code, its behaviour, and the evidence it produced
 
 | Task | File | Adds | Evidence |
 |---|---|---|---|
-| [1](#task-1--sensor-read--print-10-pts) | `Task1.py` | Sensor reading + serial print | [screenshots](#evidence) |
-| [2](#task-2--telegram-send-15-pts) | `Task2.py` | Wi-Fi + `send_message()` | [chat screenshot](#evidence-1) |
-| [3](#task-3--bot-commands-15-pts) | `Task3.py` | `/status`, `/on`, `/off` | [chat screenshot](#evidence-2) |
-| [4](#task-4--alerting--auto-off-30-pts) | `Task4.py` | Threshold alerts + auto-OFF state machine | [demo video](#evidence-3) |
+| [1](#task-1--sensor-read--print) | `Task1.py` | Sensor reading + serial print | [screenshots](#evidence) |
+| [2](#task-2--telegram-send) | `Task2.py` | Wi-Fi + `send_message()` | [chat screenshot](#evidence-1) |
+| [3](#task-3--bot-commands) | `Task3.py` | `/status`, `/on`, `/off` | [chat screenshot](#evidence-2) |
+| [4](#task-4--alerting--auto-off) | `Task4.py` | Threshold alerts + auto-OFF state machine | [demo video](#evidence-3) |
 
 ---
 ## Equipment
 These are our equipments.
 
-![pic](images\task1_newpic.jpg)
+![DHT11 wiring — data on D33](Equipment/iot_lap1_pic1.png)
+
+![Relay wiring — IN on D15](Equipment/iot_lap1_pic2.png)
 
 This is what it looks like all-together.
 
-![pic3](Equipment\iot_lap1_pic3.jpg)
+![pic3](Equipment/iot_lap1_pic3.jpg)
 
 
 
@@ -128,13 +130,9 @@ Catching it means one bad sample prints a warning instead of killing the loop.
 
 ### Evidence
 
-The code running in Thonny:
+Wiring used for the sensor read:
 
-![Task 1 — Thonny editor showing the DHT11 read loop](images\task1_pic1.png)
-
-Serial output, one reading every 5 seconds:
-
-![Task 1 — serial shell output showing temperature and humidity](images\task1_pic2.png)
+![Task 1 — ESP32 wired to the DHT11 sensor and relay](images/task1_newpic.jpg)
 
 The shell shows the expected steady stream — `Temperature: 25 °C`, `Humidity: 47 %` — with the value
 ticking up to 26 °C as the sensor warms.
@@ -171,7 +169,7 @@ needed. This is the primitive every later task is built on.
 
 ### Evidence
 
-![Task 2 — Telegram chat showing the test message delivered from the ESP32](images\task2_pic.jpg)
+![Task 2 — Telegram chat showing the test message delivered from the ESP32](images/task2_pic.jpg)
 
 `Hello from ESP32! Bot is online.` arriving in the `LapIoT` group confirms the token, chat id, and
 Wi-Fi path all work. The temperature/humidity messages higher up the same chat are from an earlier
@@ -216,7 +214,7 @@ The relay is on **GPIO2** here, initialised OFF, with `relay_state` tracking it 
 
 ### Evidence
 
-![Task 3 — Telegram chat showing /status, /on and /off all working](images\Task3_pic.jpg)
+![Task 3 — Telegram chat showing /status, /on and /off all working](images/Task3_pic.jpg)
 
 All three commands in one exchange:
 
@@ -279,7 +277,7 @@ from ON to OFF, so it cannot repeat.
 
 ### State / loop flowchart
 
-![flowchart](images\flowchart.svg)
+![flowchart](images/flowchart.svg)
 
 
 The same logic as a simple state machine:
