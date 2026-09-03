@@ -17,7 +17,6 @@ its own section below with its code, its behaviour, and the evidence it produced
 | [2](#task-2--telegram-send-15-pts) | `Task2.py` | Wi-Fi + `send_message()` | [chat screenshot](#evidence-1) |
 | [3](#task-3--bot-commands-15-pts) | `Task3.py` | `/status`, `/on`, `/off` | [chat screenshot](#evidence-2) |
 | [4](#task-4--alerting--auto-off-30-pts) | `Task4.py` | Threshold alerts + auto-OFF state machine | [demo video](#evidence-3) |
-| [5](#task-5--documentation-30-pts) | `README.md` | This document | — |
 
 ---
 
@@ -351,42 +350,3 @@ the automatic switch-off with its single `Auto-OFF` notice as the sensor cools.
 
 ---
 
-# Task 5 — Documentation (30 pts)
-
-**Requirement:** a README with wiring diagram/photo, configuration steps (token, chat id), usage
-instructions, and a block diagram or flowchart of the loop/state.
-
-This document is that deliverable:
-
-* **Wiring** — pin table and diagram in [Hardware & wiring](#hardware--wiring).
-* **Configuration** — token and chat id steps in [Configuration](#configuration-needed-from-task-2-onward).
-* **Usage** — running instructions above, and the command reference in [Task 3](#task-3--bot-commands-15-pts).
-* **Flowchart** — the Mermaid diagram and state table in [Task 4](#state--loop-flowchart).
-* **Evidence** — screenshots embedded in each task section, video linked in Task 4.
-
-> **Outstanding:** the submission checklist also asks for a **photo of the physical wiring**. The repo
-> currently has the pin table and ASCII diagram but no photograph of the assembled breadboard. Add
-> one (e.g. `wiring.jpg`) and reference it in the wiring section to close that gap.
-
----
-
-## Notes, limits and reflection
-
-* **Sampling rate.** 5 s matches the lab requirement and is well within the DHT11 minimum conversion
-  time of about 1 s. Commands are polled once per second so `/on` feels responsive without reading
-  the sensor faster than it can respond.
-* **Telegram rate limits.** Alerting every 5 s while over the threshold is roughly 12 messages per
-  minute — under the ~20 messages/minute limit Telegram applies to a group, but close enough that a
-  longer interval or exponential back-off would be safer in a real deployment.
-* **Reliability.** Every network call is wrapped in `try`/`except` so a dropped request logs an error
-  instead of crashing the loop, and each response is closed to avoid exhausting the ESP32's limited
-  memory. Wi-Fi is not re-checked after the initial connection — an automatic reconnect would be the
-  first improvement to make.
-* **DHT11 resolution.** The DHT11 reports whole degrees, so readings sit exactly on the 25 °C
-  boundary fairly often. A hysteresis band (alert at ≥ 25 °C, auto-OFF at ≤ 23 °C) would stop the
-  state machine from flapping around the threshold.
-* **Security / ethics.** The bot only accepts commands from the configured `CHAT_ID`, so a stranger
-  who finds the bot cannot switch the relay. The token is a full credential — anyone holding it can
-  control the hardware — which is why it is kept out of this repository and why the repo is private.
-  A device that can energise a physical load from a chat message should always be reviewed for what
-  happens if it is left ON, or if the network drops mid-cycle.
