@@ -6,7 +6,7 @@ import dht
 
 # ---------- WIFI ----------
 SSID = "Robotic WIFI"
-PASSWORD = "rbtWIFI@2025"
+PASSWORD = " "
 
 # ---------- TELEGRAM ----------
 BOT_TOKEN = " "

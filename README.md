@@ -299,7 +299,7 @@ The same logic as a simple state machine:
 
 ### Evidence
 
-Demo video: **https://youtu.be/rKR4NEIZvxY** (download and extract to play).
+Demo video: **https://youtu.be/rKR4NEIZvxY**
 
 The recording walks through the full cycle: silence while the room is below the limit, repeating
 alerts once the sensor is warmed past 25 °C, the alerts stopping the moment `/on` is sent, and then
