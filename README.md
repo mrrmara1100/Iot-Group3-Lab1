@@ -22,9 +22,7 @@ its own section below with its code, its behaviour, and the evidence it produced
 ## Equipment
 These are our equipments.
 
-![DHT11 wiring — data on D33](Equipment/iot_lap1_pic1.png)
-
-![Relay wiring — IN on D15](Equipment/iot_lap1_pic2.png)
+![pic](images\task1_newpic.jpg)
 
 This is what it looks like all-together.
 
@@ -134,8 +132,8 @@ Wiring used for the sensor read:
 
 ![Task 1 — ESP32 wired to the DHT11 sensor and relay](images/task1_newpic.jpg)
 
-The shell shows the expected steady stream — `Temperature: 25 °C`, `Humidity: 47 %` — with the value
-ticking up to 26 °C as the sensor warms.
+The DHT11 data line goes to **GPIO33**, with the module powered from 5V and GND. With this wiring
+in place, `Task1.py` prints a temperature and humidity pair to the Thonny shell every 5 seconds.
 
 ---
 
