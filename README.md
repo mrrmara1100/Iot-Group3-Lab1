@@ -19,6 +19,16 @@ its own section below with its code, its behaviour, and the evidence it produced
 | [4](#task-4--alerting--auto-off-30-pts) | `Task4.py` | Threshold alerts + auto-OFF state machine | [demo video](#evidence-3) |
 
 ---
+## Equipment
+These are our equipments.
+
+![pic](images\task1_newpic.jpg)
+
+This is what it looks like all-together.
+
+![pic3](Equipment\iot_lap1_pic3.jpg)
+
+
 
 ## Hardware & wiring
 
@@ -27,13 +37,6 @@ its own section below with its code, its behaviour, and the evidence it produced
 * 1-channel relay module
 * Jumper wires, USB cable
 * Laptop with **Thonny**, plus Wi-Fi with internet access
-
-> **Note on the lab sheet.** The handout specifies a **DHT22** on `D4` with the relay on `D2`. The
-> parts available to us were a **DHT11**, and the pins were moved to free GPIOs, so the code as
-> submitted uses the wiring below. The DHT11 driver (`dht.DHT11`) returns whole-degree integers
-> rather than the DHT22 decimals, which is why the readings show no fractional part. To switch to a
-> DHT22, change `dht.DHT11(...)` to `dht.DHT22(...)` and re-wire the data pin — nothing else in the
-> logic needs to change.
 
 | Module | Module pin | ESP32 pin |
 |---|---|---|
@@ -44,26 +47,6 @@ its own section below with its code, its behaviour, and the evidence it produced
 | Relay | GND | GND |
 | Relay | IN | **GPIO2** (`Task3.py`) / **GPIO15** (`Task4.py`) |
 
-```
-        ESP32 DevKit                        DHT11
-   +-------------------+              +---------------+
-   |               5V  |--------------| +  (VCC)      |
-   |               GND |--------------| -  (GND)      |
-   |            GPIO33 |--------------| OUT (DATA)    |
-   |                   |              +---------------+
-   |                   |
-   |                   |               Relay module
-   |               5V  |--------------| VCC           |
-   |               GND |--------------| GND           |
-   |    GPIO2 / GPIO15 |--------------| IN            |
-   +-------------------+              +---------------+
-                                       NO / COM --> load
-```
-
-**Safety.** Keep the mains/load side of the relay isolated — do not touch the screw-terminal side
-while it is energised, and drive only a low-voltage dummy load for the demo. The relay module is
-powered from 5V while the ESP32 GPIO signal is 3.3V; the opto-isolated input on the module handles
-the level difference.
 
 ---
 
@@ -110,7 +93,7 @@ CHAT_ID   = " "      # <-- paste your group chat id here
 
 ---
 
-# Task 1 — Sensor Read & Print (10 pts)
+# Task 1 — Sensor Read & Print 
 
 **Requirement:** read the DHT sensor every 5 seconds and print temperature and humidity.
 
@@ -147,18 +130,18 @@ Catching it means one bad sample prints a warning instead of killing the loop.
 
 The code running in Thonny:
 
-![Task 1 — Thonny editor showing the DHT11 read loop](task1_pic1.png)
+![Task 1 — Thonny editor showing the DHT11 read loop](images\task1_pic1.png)
 
 Serial output, one reading every 5 seconds:
 
-![Task 1 — serial shell output showing temperature and humidity](task1_pic2.png)
+![Task 1 — serial shell output showing temperature and humidity](images\task1_pic2.png)
 
 The shell shows the expected steady stream — `Temperature: 25 °C`, `Humidity: 47 %` — with the value
 ticking up to 26 °C as the sensor warms.
 
 ---
 
-# Task 2 — Telegram Send (15 pts)
+# Task 2 — Telegram Send 
 
 **Requirement:** implement `send_message()` and post a test message to the group.
 
@@ -188,7 +171,7 @@ needed. This is the primitive every later task is built on.
 
 ### Evidence
 
-![Task 2 — Telegram chat showing the test message delivered from the ESP32](task2_pic.jpg)
+![Task 2 — Telegram chat showing the test message delivered from the ESP32](images\task2_pic.jpg)
 
 `Hello from ESP32! Bot is online.` arriving in the `LapIoT` group confirms the token, chat id, and
 Wi-Fi path all work. The temperature/humidity messages higher up the same chat are from an earlier
@@ -196,7 +179,7 @@ run that posted live readings.
 
 ---
 
-# Task 3 — Bot Commands (15 pts)
+# Task 3 — Bot Commands 
 
 **Requirement:** implement `/status` to reply with current T/H and relay state, and `/on` / `/off` to
 control the relay.
@@ -233,7 +216,7 @@ The relay is on **GPIO2** here, initialised OFF, with `relay_state` tracking it 
 
 ### Evidence
 
-![Task 3 — Telegram chat showing /status, /on and /off all working](Task3_pic.jpg)
+![Task 3 — Telegram chat showing /status, /on and /off all working](images\Task3_pic.jpg)
 
 All three commands in one exchange:
 
@@ -244,7 +227,7 @@ All three commands in one exchange:
 
 ---
 
-# Task 4 — Alerting & Auto-OFF (30 pts)
+# Task 4 — Alerting & Auto-OFF 
 
 **Requirement:** silent below 25 °C; alert every loop while ≥ 25 °C with the relay OFF; stop alerting
 after `/on`; automatically switch OFF with a one-time notice when the temperature drops back.
@@ -296,32 +279,8 @@ from ON to OFF, so it cannot repeat.
 
 ### State / loop flowchart
 
-```mermaid
-flowchart TD
-    A[Boot: connect Wi-Fi] --> B[Relay OFF, flush old Telegram updates]
-    B --> C{Main loop}
-    C -->|every 1 s| D[Poll getUpdates]
-    D --> E{Command?}
-    E -->|/on| F[Relay ON, alerts stop]
-    E -->|/off| G[Relay OFF]
-    E -->|/status| H[Reply with T / H / relay state]
-    E -->|none| C
-    F --> C
-    G --> C
-    H --> C
-    C -->|every 5 s| I[Read DHT11]
-    I --> J{T >= 25 C ?}
-    J -->|Yes| K{Relay ON ?}
-    K -->|No| L[Send ALERT, repeat next loop]
-    K -->|Yes| M[Stay silent]
-    J -->|No| N{Relay ON ?}
-    N -->|Yes| O[Relay OFF + one-time Auto-OFF notice]
-    N -->|No| P[Stay silent]
-    L --> C
-    M --> C
-    O --> C
-    P --> C
-```
+![flowchart](images\flowchart.svg)
+
 
 The same logic as a simple state machine:
 
@@ -342,7 +301,7 @@ The same logic as a simple state machine:
 
 ### Evidence
 
-Demo video: **[`task4_vid.zip`](task4_vid.zip)** (download and extract to play).
+Demo video: **https://youtu.be/rKR4NEIZvxY** (download and extract to play).
 
 The recording walks through the full cycle: silence while the room is below the limit, repeating
 alerts once the sensor is warmed past 25 °C, the alerts stopping the moment `/on` is sent, and then
