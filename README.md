@@ -22,7 +22,7 @@ its own section below with its code, its behaviour, and the evidence it produced
 ## Equipment
 These are our equipments.
 
-![task1_newpic](images\task1_newpic.jpg)
+![task1_newpic](images/task1_newpic.jpg)
 
 This is what it looks like all-together.
 
